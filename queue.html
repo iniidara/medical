@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Queue</title>
+  <link rel="stylesheet" href="queue.css" />
+</head>
+
+<body>
+  <main class="page-shell">
+    <section class="card" aria-labelledby="pageTitle">
+      <p class="eyebrow">UNILAG MEDICAL CENTER</p>
+      <h1 id="pageTitle">Live Queue</h1>
+      <div id="queueList" class="queue-list" aria-live="polite" aria-label="Patient queue"></div>
+    </section>
+  </main>
+
+  <button onclick="window.location.href='index.html'">New Check-In</button>
+  <script src="queue.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Clinic Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+  <div class="page-shell">
+
+    <div class="card">
+
+      <div class="dashboard-top">
+
+        <div>
+          <p class="eyebrow">UNILAG MEDICAL CENTER</p>
+          <h1>Admin Dashboard</h1>
+        </div>
+
+        <button class="clear-btn" onclick="clearQueue()">
+          Clear Queue
+        </button>
+
+      </div>
+
+      <div id="adminQueue"></div>
+
+    </div>
+
+  </div>
+
+  <button onclick="window.location.href='queue.html'">
+  View Public Queue
+</button>
+
+  <script src="admin.js"></script>
+
+</body>
+</html>

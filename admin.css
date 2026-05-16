@@ -1,0 +1,57 @@
+/* Admin Dashboard */
+
+.dashboard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-actions button {
+  flex: 1;
+  min-width: 100px;
+}
+
+.clear-btn {
+  width: auto;
+  min-width: 120px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff4d6d 0%,
+      #ff7a59 100%
+    );
+
+  color: white;
+
+  font-weight: 700;
+}
+
+.clear-btn:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-top {
+    flex-direction: column;
+  }
+
+  .clear-btn {
+    width: 100%;
+  }
+
+  .admin-actions {
+    flex-direction: column;
+  }
+
+}

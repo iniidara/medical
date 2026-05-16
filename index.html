@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UNILAG Health Check-In</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="card">
+            <p class="eyebrow">UNILAG Health Check-In</p>
+            <h1>Clinic Check-In</h1>
+
+            <div class="form-row">
+                <input id="name" placeholder="Your Name" />
+                <select id="symptom">
+                    <option>Fever</option>
+                    <option>Headache</option>
+                    <option>Injury</option>
+                    <option>Other</option>
+                </select>
+                <button onclick="checkIn()">Submit</button>
+            </div>
+
+            <div id="result" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
