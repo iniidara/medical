@@ -1,4 +1,4 @@
-/* Sexy live queue page */
+﻿/* Sexy live queue page */
 :root {
   color-scheme: dark;
   font-family: "Inter", "Segoe UI", system-ui, sans-serif;
@@ -207,21 +207,40 @@ h1 {
   font-size: 1rem;
 }
 
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.page-actions button {
+  min-width: 140px;
+  border: 0;
+  border-radius: 18px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #eef2ff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.page-actions button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+}
+
 .current-user {
-
-  border:
-    1px solid rgba(69,213,255,0.45);
-
-  box-shadow:
-    0 0 0 1px rgba(69,213,255,0.08),
-    0 20px 60px rgba(69,213,255,0.12);
-
+  border: 1px solid rgba(69,213,255,0.45);
+  box-shadow: 0 0 0 1px rgba(69,213,255,0.08), 0 20px 60px rgba(69,213,255,0.12);
   transform: scale(1.01);
 }
 
 @media (max-width: 640px) {
   body {
-    padding: 18px;
+    padding: 20px;
   }
 
   .card {

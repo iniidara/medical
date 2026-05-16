@@ -1,41 +1,30 @@
-<!DOCTYPE html>
-<html>
-
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clinic Admin Dashboard</title>
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="admin.css" />
 </head>
-
 <body>
-
-  <div class="page-shell">
-
-    <div class="card">
-
-      <div class="dashboard-top">
-
+  <main class="page-shell">
+    <section class="card" aria-labelledby="adminTitle">
+      <header class="dashboard-top">
         <div>
           <p class="eyebrow">UNILAG MEDICAL CENTER</p>
-          <h1>Admin Dashboard</h1>
+          <h1 id="adminTitle">Admin Dashboard</h1>
         </div>
 
-        <button class="clear-btn" onclick="clearQueue()">
-          Clear Queue
-        </button>
+        <div class="action-bar">
+          <button class="button button-secondary" type="button" onclick="window.location.href='queue.html'">Live Queue</button>
+          <button class="button button-danger" type="button" onclick="clearQueue()">Clear Queue</button>
+        </div>
+      </header>
 
-      </div>
-
-      <div id="adminQueue"></div>
-
-    </div>
-
-  </div>
-
-  <button onclick="window.location.href='queue.html'">
-  View Public Queue
-</button>
+      <div id="adminQueue" class="admin-queue" aria-live="polite"></div>
+    </section>
+  </main>
 
   <script src="admin.js"></script>
-
 </body>
 </html>

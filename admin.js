@@ -1,132 +1,109 @@
+﻿const QUEUE_KEY = "queue";
+const REFRESH_INTERVAL_MS = 1000;
+const adminQueue = document.getElementById("adminQueue");
+
+function getQueue() {
+  const rawQueue = localStorage.getItem(QUEUE_KEY);
+  if (!rawQueue) return [];
+
+  try {
+    return JSON.parse(rawQueue);
+  } catch (error) {
+    console.warn("Unable to parse queue from localStorage:", error);
+    return [];
+  }
+}
+
+function saveQueue(queue) {
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+}
+
+function createPatientCard(patient, index) {
+  const card = document.createElement("div");
+  card.className = "patient-card";
+
+  card.innerHTML = `
+    <div class="patient-header">
+      <div class="patient-summary">
+        <div class="queue-number">${index + 1}</div>
+        <div class="patient-details">
+          <h3 class="patient-name">${patient.name}</h3>
+          <p class="patient-symptom">${patient.symptom}</p>
+        </div>
+      </div>
+      <div class="status-badge">${patient.status}</div>
+    </div>
+    <div class="admin-actions">
+      <button type="button" onclick="startConsult(${index})">Start</button>
+      <button type="button" onclick="markDone(${index})">Done</button>
+      <button type="button" onclick="removePatient(${index})">Remove</button>
+    </div>
+  `;
+
+  return card;
+}
+
+function renderEmptyState() {
+  const emptyState = document.createElement("div");
+  emptyState.className = "empty-state";
+  emptyState.innerHTML = `
+    <h2>No Active Patients</h2>
+    <p>The clinic queue is currently empty.</p>
+  `;
+  return emptyState;
+}
+
 function loadAdminQueue() {
-
-  const queue = JSON.parse(localStorage.getItem("queue")) || [];
-
-  const adminQueue = document.getElementById("adminQueue");
-
+  const queue = getQueue();
   adminQueue.innerHTML = "";
 
-  if (queue.length === 0) {
-
-    adminQueue.innerHTML = `
-      <div class="empty-state">
-        <h3>No Active Patients</h3>
-        <p>The clinic queue is currently empty.</p>
-      </div>
-    `;
-
+  if (!queue.length) {
+    adminQueue.appendChild(renderEmptyState());
     return;
   }
 
   queue.forEach((patient, index) => {
-
-    const div = document.createElement("div");
-
-    div.classList.add("patient-card");
-
-    div.innerHTML = `
-
-      <div class="patient-header">
-
-        <div style="display:flex; gap:14px; align-items:center;">
-
-          <div class="queue-number">
-            ${index + 1}
-          </div>
-
-          <div>
-            <h3 class="patient-name">
-              ${patient.name}
-            </h3>
-
-            <p class="patient-symptom">
-              ${patient.symptom}
-            </p>
-          </div>
-
-        </div>
-
-        <div class="status-badge">
-          ${patient.status}
-        </div>
-
-      </div>
-
-      <div class="admin-actions">
-
-        <button onclick="startConsult(${index})">
-          Start
-        </button>
-
-        <button onclick="markDone(${index})">
-          Done
-        </button>
-
-        <button onclick="removePatient(${index})">
-          Remove
-        </button>
-
-      </div>
-
-    `;
-
-    adminQueue.appendChild(div);
-
+    adminQueue.appendChild(createPatientCard(patient, index));
   });
-
 }
 
 function startConsult(index) {
+  const queue = getQueue();
+  if (!queue[index]) return;
 
-  let queue = JSON.parse(localStorage.getItem("queue")) || [];
-
-  // reset everyone else
-  queue.forEach(patient => {
+  queue.forEach((patient) => {
     if (patient.status === "in consultation") {
       patient.status = "waiting";
     }
   });
 
-  // active patient
   queue[index].status = "in consultation";
-
-  localStorage.setItem("queue", JSON.stringify(queue));
-
+  saveQueue(queue);
   loadAdminQueue();
 }
 
 function markDone(index) {
-
-  let queue = JSON.parse(localStorage.getItem("queue")) || [];
+  const queue = getQueue();
+  if (!queue[index]) return;
 
   queue[index].status = "done";
-
-  localStorage.setItem("queue", JSON.stringify(queue));
-
+  saveQueue(queue);
   loadAdminQueue();
-
 }
 
 function removePatient(index) {
-
-  let queue = JSON.parse(localStorage.getItem("queue")) || [];
+  const queue = getQueue();
+  if (!queue[index]) return;
 
   queue.splice(index, 1);
-
-  localStorage.setItem("queue", JSON.stringify(queue));
-
+  saveQueue(queue);
   loadAdminQueue();
-
 }
 
 function clearQueue() {
-
-  localStorage.removeItem("queue");
-
+  localStorage.removeItem(QUEUE_KEY);
   loadAdminQueue();
-
 }
 
 loadAdminQueue();
-
-setInterval(loadAdminQueue, 1000);
+setInterval(loadAdminQueue, REFRESH_INTERVAL_MS);
