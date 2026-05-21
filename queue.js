@@ -110,4 +110,25 @@ async function loadQueue() {
 
 loadQueue();
 
-setInterval(loadQueue, 2000);
+supabaseClient
+  .channel("queue-live")
+
+  .on(
+    "postgres_changes",
+
+    {
+      event: "*",
+      schema: "public",
+      table: "queue"
+    },
+
+    (payload) => {
+
+      console.log("Realtime update:", payload);
+
+      loadQueue();
+
+    }
+  )
+
+  .subscribe();

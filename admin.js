@@ -151,4 +151,25 @@ async function clearQueue() {
 
 loadAdminQueue();
 
-setInterval(loadAdminQueue, 2000);
+supabaseClient
+  .channel("admin-live")
+
+  .on(
+    "postgres_changes",
+
+    {
+      event: "*",
+      schema: "public",
+      table: "queue"
+    },
+
+    (payload) => {
+
+      console.log("Admin realtime:", payload);
+
+      loadAdminQueue();
+
+    }
+  )
+
+  .subscribe();
