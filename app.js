@@ -1,25 +1,37 @@
-function checkIn() {
-  const name = document.getElementById("name").value;
-  const symptom = document.getElementById("symptom").value;
+async function checkIn() {
+
+  const name =
+    document.getElementById("name").value;
+
+  const symptom =
+    document.getElementById("symptom").value;
 
   if (!name) {
     alert("Enter your name");
     return;
   }
 
-  let queue = JSON.parse(localStorage.getItem("queue")) || [];
+  const { data, error } =
+    await supabaseClient
+      .from("queue")
+      .insert([
+        {
+          name: name,
+          symptom: symptom,
+          status: "waiting"
+        }
+      ]);
 
-  const patient = {
-    name,
-    symptom,
-    status: "waiting"
-  };
+  if (error) {
+    console.error(error);
+    return;
+  }
 
-  queue.push(patient);
+  localStorage.setItem(
+    "currentPatient",
+    name
+  );
 
-  localStorage.setItem("queue", JSON.stringify(queue));
-
-  // store current patient name
-  localStorage.setItem("currentPatient", name);
-  window.location.href = "queue.html";
+  window.location.href =
+    "queue.html";
 }

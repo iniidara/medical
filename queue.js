@@ -1,80 +1,113 @@
-const QUEUE_REFRESH_INTERVAL = 1000;
-const queueList = document.getElementById("queueList");
+async function loadQueue() {
 
-function getQueue() {
-  const storedValue = localStorage.getItem("queue");
-  if (!storedValue) {
-    return [];
-  }
+  const { data, error } =
+    await supabaseClient
+      .from("queue")
+      .select("*")
+      .order("created_at", {
+        ascending: true
+      });
 
-  try {
-    return JSON.parse(storedValue);
-  } catch (error) {
-    console.warn("Unable to parse queue from localStorage:", error);
-    return [];
-  }
-}
-
-function createStatusIndicator(status, isNextInLine) {
-  if (status === "waiting" && isNextInLine) {
-    return `<div class="indicator next-indicator">YOU'RE NEXT</div>`;
-  }
-
-  if (status === "in consultation") {
-    return `<div class="indicator consulting-indicator">IN CONSULTATION</div>`;
-  }
-
-  return "";
-}
-
-function createPatientCard(patient, position) {
-  const card = document.createElement("article");
-  card.className = "patient-card";
-
-  card.innerHTML = `
-    ${createStatusIndicator(patient.status, position === 0)}
-
-    <div class="patient-header">
-      <div class="patient-summary">
-        <div class="queue-number">${position + 1}</div>
-
-        <div class="patient-details">
-          <h2 class="patient-name">${patient.name}</h2>
-          <p class="patient-symptom">${patient.symptom}</p>
-        </div>
-      </div>
-
-      <div class="status-badge">${patient.status}</div>
-    </div>
-  `;
-
-  return card;
-}
-
-function renderEmptyState() {
-  const emptyState = document.createElement("div");
-  emptyState.className = "empty-state";
-  emptyState.innerHTML = `
-    <h2>No Patients In Queue</h2>
-    <p>The clinic queue is currently empty.</p>
-  `;
-
-  return emptyState;
-}
-
-function loadQueue() {
-  queueList.innerHTML = "";
-  const queue = getQueue();
-
-  if (queue.length === 0) {
-    queueList.appendChild(renderEmptyState());
+  if (error) {
+    console.error(error);
     return;
   }
 
-  queue.forEach((patient, index) => {
-    queueList.appendChild(createPatientCard(patient, index));
+  const queueList =
+    document.getElementById("queueList");
+
+  queueList.innerHTML = "";
+
+  if (data.length === 0) {
+
+    queueList.innerHTML = `
+      <div class="empty-state">
+        <h3>No Patients In Queue</h3>
+      </div>
+    `;
+
+    return;
+  }
+
+  const currentPatient =
+    localStorage.getItem("currentPatient");
+
+  data.forEach((patient, index) => {
+
+    const div =
+      document.createElement("div");
+
+    div.classList.add("patient-card");
+
+    if (patient.name === currentPatient) {
+      div.classList.add("current-user");
+    }
+
+    let nextBadge = "";
+
+    if (
+      index === 0 &&
+      patient.status === "waiting"
+    ) {
+      nextBadge = `
+        <div class="next-indicator">
+          YOU'RE NEXT
+        </div>
+      `;
+    }
+
+    if (
+      patient.status ===
+      "in consultation"
+    ) {
+      nextBadge = `
+        <div class="consulting-indicator">
+          IN CONSULTATION
+        </div>
+      `;
+    }
+
+    div.innerHTML = `
+
+      ${nextBadge}
+
+      <div class="patient-header">
+
+        <div style="
+          display:flex;
+          gap:14px;
+          align-items:center;
+        ">
+
+          <div class="queue-number">
+            ${index + 1}
+          </div>
+
+          <div>
+            <h3 class="patient-name">
+              ${patient.name}
+            </h3>
+
+            <p class="patient-symptom">
+              ${patient.symptom}
+            </p>
+          </div>
+
+        </div>
+
+        <div class="status-badge">
+          ${patient.status}
+        </div>
+
+      </div>
+    `;
+
+    queueList.appendChild(div);
+
   });
+
 }
 
 loadQueue();
-setInterval(loadQueue, QUEUE_REFRESH_INTERVAL);
+
+setInterval(loadQueue, 2000);
