@@ -2,7 +2,7 @@
 
 Real-time clinic workflow and queue management system built for universities and campus medical centers.
 
-MediFlow helps reduce overcrowding, improve patient flow, and modernize student clinic experiences through live queue tracking, smart triage, and real-time updates.
+MediQ helps reduce overcrowding, improve patient flow, and modernize student clinic experiences through live queue tracking, smart triage, and real-time updates.
 
 ## Features
 
