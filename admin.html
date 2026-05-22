@@ -12,6 +12,7 @@
       <header class="dashboard-top">
         <div>
           <p class="eyebrow">MediQ</p>
+          <p class="hero-tag">Monitor patient flow, call the next case, and keep the clinic queue moving.</p>
           <h1 id="adminTitle">Admin Dashboard</h1>
         </div>
 
@@ -20,6 +21,23 @@
           <button class="button button-danger" type="button" onclick="clearQueue()">Clear Queue</button>
         </div>
       </header>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+            <h3 id="totalPatients">0</h3>
+            <p>Total Patients</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3 id="urgentCases">0</h3>
+            <p>Urgent Cases</p>
+        </div>
+
+        <div class="stat-card">
+            <h3 id="consultationCount">0</h3>
+            <p>In Consultation</p>
+        </div>
+      </div>
 
       <div id="adminQueue" class="admin-queue" aria-live="polite"></div>
     </section>

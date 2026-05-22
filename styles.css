@@ -150,40 +150,214 @@ select:focus-visible {
   min-height: 3rem;
 }
 
+.symptom-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+}
+
+.group-title {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #f3f5ff;
+  letter-spacing: 0.01em;
+}
+
+.symptom-group label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 20px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.08);
+  color: rgba(238,246,255,0.85);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.symptom-group label:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(115,80,255,0.25);
+  transform: translateX(2px);
+}
+
+.symptom-group input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #7350ff;
+}
+
+.symptom-group input[type="checkbox"]:checked + label,
+.symptom-group label:has(input[type="checkbox"]:checked) {
+  background: linear-gradient(135deg, rgba(115,80,255,0.25), rgba(69,213,255,0.15));
+  border-color: rgba(115,80,255,0.35);
+  color: #f3f5ff;
+  box-shadow: 0 0 20px rgba(115,80,255,0.12);
+}
+
+textarea {
+  width: 100%;
+  min-height: 140px;
+  border: 0;
+  border-radius: 22px;
+  padding: 20px;
+  resize: vertical;
+  font-family: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  color: #eef2ff;
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: all 0.2s ease;
+}
+
+textarea::placeholder {
+  color: rgba(238,246,255,0.45);
+}
+
+textarea:focus {
+  border-color: rgba(115,80,255,0.35);
+  box-shadow: 0 0 24px rgba(115,80,255,0.12);
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.page-actions button {
+  flex: 1;
+  min-width: 140px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 18px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #eef2ff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.page-actions button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+  border-color: rgba(115, 80, 255, 0.25);
+}
+
+
 @media (max-width: 560px) {
   body {
-    padding: 18px;
+    padding: 16px;
   }
 
   .card {
-    padding: 28px 22px;
+    padding: 26px 20px;
   }
 
   .form-row {
-    gap: 14px;
+    gap: 12px;
   }
 
   input, select, button {
-    min-height: 52px;
-    padding: 14px 16px;
+    min-height: 50px;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .symptom-group {
+    padding: 18px;
+    gap: 10px;
+  }
+
+  .symptom-group label {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  textarea {
+    min-height: 120px;
+    padding: 16px;
+    font-size: 0.95rem;
+  }
+
+  .page-actions {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .page-actions button {
+    min-height: 46px;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    margin-bottom: 24px;
   }
 }
 
 @media (max-width: 420px) {
   .card {
     border-radius: 24px;
+    padding: 20px 16px;
   }
 
   h1 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
   }
 
   .eyebrow {
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
+    margin-bottom: 10px;
   }
 
   .hero-tag {
-    font-size: 1rem;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+
+  .symptom-group {
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .group-title {
+    font-size: 0.95rem;
+  }
+
+  .symptom-group label {
+    padding: 10px 12px;
+    gap: 12px;
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    min-height: 110px;
+    padding: 14px;
+  }
+
+  .page-actions {
+    flex-direction: column;
+  }
+
+  .page-actions button {
+    width: 100%;
+    min-width: auto;
   }
 }

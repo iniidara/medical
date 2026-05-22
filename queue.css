@@ -249,6 +249,75 @@ h1 {
   transform: scale(1.01);
 }
 
+.ticket-number {
+
+  margin: 0;
+
+  font-size: 1.2rem;
+
+  color: white;
+}
+
+.estimated-time {
+
+  margin-top: 8px;
+
+  color:
+    rgba(255,255,255,0.6);
+
+  font-size: 0.92rem;
+}
+
+.urgency-badge {
+
+  padding:
+    10px 14px;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.urgent {
+
+  background:
+    rgba(255,0,80,0.18);
+
+  border:
+    1px solid rgba(255,0,80,0.35);
+
+  color:
+    #ff7b9c;
+}
+
+.moderate {
+
+  background:
+    rgba(255,170,0,0.14);
+
+  border:
+    1px solid rgba(255,170,0,0.3);
+
+  color:
+    #ffc266;
+}
+
+.non-urgent {
+
+  background:
+    rgba(0,255,163,0.12);
+
+  border:
+    1px solid rgba(0,255,163,0.28);
+
+  color:
+    #7fffd4;
+}
+
 @media (max-width: 640px) {
   body {
     padding: 20px;

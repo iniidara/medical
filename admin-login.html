@@ -1,29 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clinic Login</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-    <main class="page-shell">
-        <section class="card">
+  <main class="page-shell">
+    <section class="card">
+      <p class="eyebrow">UNILAG Medical Center</p>
+      <p class="hero-tag">Admin access for clinic staff. Keep login credentials safe.</p>
+      <h1>Clinic Login</h1>
 
-            <p class="eyebrow">UNILAG Medical Center</p>
-            
-            <h1>Clinic Login</h1>
-            
-            <div class="form-row">
-                <input type="password" id="password" placeholder="Enter Clinic Password"/>
-                <button onclick="loginAdmin()">Login</button>
-            </div>
-            
-        </section>
-
+      <div class="form-row">
+        <input type="password" id="password" placeholder="Enter Clinic Password" />
+        <button type="button" onclick="loginAdmin()">Login</button>
+      </div>
+    </section>
   </main>
 
   <script src="admin-login.js"></script>
-
 </body>
 </html>

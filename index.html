@@ -14,15 +14,41 @@
             <h1>Clinic Check-In</h1>
 
             <div class="form-row">
-                <input id="name" placeholder="Your Name" />
-                <select id="symptom">
-                    <option>Fever</option>
-                    <option>Headache</option>
-                    <option>Injury</option>
-                    <option>Other</option>
-                </select>
-                <button type="button" onclick="checkIn()">Submit</button>
+                <input id="name" placeholder="Full Name"/>
+                <input id="matric" placeholder="Matric Number"/>
+                
+                <div class="symptom-group">
+                    <p class="group-title">What are your symptoms?</p>
+                    <label>
+                        <input type="checkbox" value="Fever" class="symptom-check"/>
+                        <span>Fever</span>
+                    </label>
+                    
+                    <label>
+                        <input type="checkbox" value="Headache" class="symptom-check"/>
+                        <span>Headache</span>
+                    </label>
+                    
+                    <label>
+                        <input type="checkbox" value="Injury" class="symptom-check"/>
+                        <span>Injury</span>
+                    </label>
+                    
+                    <label>
+                        <input type="checkbox" value="Chest Pain" class="symptom-check"/>
+                        <span>Chest Pain</span>
+                    </label>
+                    
+                    <label>
+                        <input type="checkbox" value="Difficulty Breathing" class="symptom-check"/>
+                        <span>Difficulty Breathing</span>
+                    </label>
+                </div>
             </div>
+            
+            <textarea id="notes" placeholder="Describe how you feel..."></textarea>
+            
+            <button type="button" onclick="checkIn()">Submit</button>
 
             <div class="page-actions">
                 <button type="button" onclick="window.location.href='queue.html'">View Live Queue</button>
