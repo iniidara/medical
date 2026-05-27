@@ -4,7 +4,7 @@ if ("Notification" in window) {
 
 }
 
-let hasNotified = false;
+let lastNotified = null;
 
 async function loadQueue() {
 
@@ -13,6 +13,9 @@ async function loadQueue() {
       .from("queue")
       .select("*")
       .neq("status", "done")
+      .order("priority", {
+        ascending: false
+      })
       .order("created_at", {
         ascending: true
       });
@@ -40,18 +43,138 @@ async function loadQueue() {
     return;
   }
 
-  const currentPatient =
-    localStorage.getItem("currentPatient");
+  // queue stats
 
-  // reset notification state
-  hasNotified = false;
+  const waitingCount =
+    document.getElementById(
+      "waitingCount"
+    );
+
+  const urgentCount =
+    document.getElementById(
+      "urgentCount"
+    );
+
+  const avgWait =
+    document.getElementById(
+      "avgWait"
+    );
+
+  const nowServing =
+    document.getElementById(
+      "nowServing"
+    );
+
+  if (waitingCount) {
+
+    waitingCount.innerText =
+      data.length;
+
+  }
+
+  const urgentCases =
+    data.filter(
+      patient =>
+        patient.urgency ===
+        "Urgent"
+    ).length;
+
+  if (urgentCount) {
+
+    urgentCount.innerText =
+      urgentCases;
+
+  }
+
+  if (avgWait) {
+
+    avgWait.innerText =
+      `${data.length * 5}m`;
+
+  }
+
+  const activePatient =
+    data.find(
+      patient =>
+        patient.status ===
+        "in consultation"
+    );
+
+  if (nowServing) {
+
+    if (activePatient) {
+
+      nowServing.innerText =
+        activePatient.ticket_number;
+
+    }
+
+    else {
+
+      nowServing.innerText =
+        "--";
+
+    }
+
+  }
+
+  const currentPatient =
+    localStorage.getItem(
+      "currentPatient"
+    );
+
+  // notification logic
+
+  const patientIndex =
+    data.findIndex(
+      patient =>
+        patient.ticket_number ===
+        currentPatient
+    );
+
+  if (
+    patientIndex !== -1 &&
+    patientIndex <= 1
+  ) {
+
+    const patient =
+      data[patientIndex];
+
+    if (
+      Notification.permission ===
+      "granted"
+    ) {
+
+      if (
+        lastNotified !==
+        patient.ticket_number
+      ) {
+
+        new Notification(
+          "MediFlow Alert",
+          {
+            body:
+              "You're almost next at the clinic."
+          }
+        );
+
+        lastNotified =
+          patient.ticket_number;
+
+      }
+
+    }
+
+  }
 
   data.forEach((patient, index) => {
 
     const div =
       document.createElement("div");
 
-    div.classList.add("patient-card");
+    div.classList.add(
+      "patient-card"
+    );
 
     if (
       patient.ticket_number ===
@@ -64,50 +187,34 @@ async function loadQueue() {
 
     }
 
-    // notification logic
-
-    if (
-      patient.ticket_number ===
-      currentPatient &&
-      index <= 1 &&
-      patient.status === "waiting" &&
-      !hasNotified
-    ) {
-
-      new Notification(
-        "MediFlow Alert",
-        {
-          body:
-            "You're almost next. Please prepare."
-        }
-      );
-
-      hasNotified = true;
-    }
-
     // urgency styling
 
     let urgencyClass = "";
 
     if (
-      patient.urgency === "Urgent"
+      patient.urgency ===
+      "Urgent"
     ) {
 
-      urgencyClass = "urgent";
+      urgencyClass =
+        "urgent";
 
     }
 
     else if (
-      patient.urgency === "Moderate"
+      patient.urgency ===
+      "Moderate"
     ) {
 
-      urgencyClass = "moderate";
+      urgencyClass =
+        "moderate";
 
     }
 
     else {
 
-      urgencyClass = "non-urgent";
+      urgencyClass =
+        "non-urgent";
 
     }
 
@@ -120,7 +227,8 @@ async function loadQueue() {
 
     if (
       index === 0 &&
-      patient.status === "waiting"
+      patient.status ===
+      "waiting"
     ) {
 
       nextBadge = `
@@ -128,6 +236,7 @@ async function loadQueue() {
           YOU'RE NEXT
         </div>
       `;
+
     }
 
     if (
@@ -140,6 +249,7 @@ async function loadQueue() {
           IN CONSULTATION
         </div>
       `;
+
     }
 
     div.innerHTML = `
@@ -157,6 +267,11 @@ async function loadQueue() {
           <p class="estimated-time">
             Estimated Wait:
             ${waitTime} mins
+          </p>
+
+          <p class="queue-position">
+            Position:
+            ${index + 1}
           </p>
 
         </div>

@@ -24,22 +24,44 @@ async function checkIn() {
     return;
   }
 
-  // urgency logic
-  let urgency = "Non-Urgent";
+// urgency logic
 
-  if (
-    symptoms.includes("Chest Pain") ||
-    symptoms.includes("Difficulty Breathing")
-  ) {
+let urgency = "Non-Urgent";
 
-    urgency = "Urgent";
+if (
+  symptoms.includes("Chest Pain") ||
+  symptoms.includes("Difficulty Breathing")
+) {
 
-  } else if (
-    symptoms.includes("Injury")
-  ) {
+  urgency = "Urgent";
 
-    urgency = "Moderate";
-  }
+}
+
+else if (
+  symptoms.includes("Injury")
+) {
+
+  urgency = "Moderate";
+
+}
+
+// priority logic
+
+let priority = 1;
+
+if (urgency === "Urgent") {
+
+  priority = 3;
+
+}
+
+else if (
+  urgency === "Moderate"
+) {
+
+  priority = 2;
+
+}
 
   // generate ticket
   const ticketNumber =
@@ -58,6 +80,7 @@ async function checkIn() {
           symptoms: symptoms.join(", "),
           notes: notes,
           urgency: urgency,
+          priority: priority,
           ticket_number: ticketNumber,
           status: "waiting"
         }

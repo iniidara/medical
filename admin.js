@@ -14,31 +14,26 @@ async function loadAdminQueue() {
     await supabaseClient
       .from("queue")
       .select("*")
-      .neq("status", "done");
+      .neq("status", "done")
+      .order("priority", {
+        ascending: false
+      })
+      .order("created_at", {
+        ascending: true
+      });
 
   if (error) {
+
     console.error(error);
+
     return;
+
   }
 
-  // urgency priority sorting
-  const urgencyOrder = {
-    "Urgent": 1,
-    "Moderate": 2,
-    "Non-Urgent": 3
-  };
-
-  data.sort((a, b) => {
-
-    return (
-      urgencyOrder[a.urgency] -
-      urgencyOrder[b.urgency]
-    );
-
-  });
-
   const adminQueue =
-    document.getElementById("adminQueue");
+    document.getElementById(
+      "adminQueue"
+    );
 
   adminQueue.innerHTML = "";
 
@@ -53,6 +48,7 @@ async function loadAdminQueue() {
     updateStats([]);
 
     return;
+
   }
 
   data.forEach((patient, index) => {
@@ -60,23 +56,43 @@ async function loadAdminQueue() {
     const div =
       document.createElement("div");
 
-    div.classList.add("patient-card");
+    div.classList.add(
+      "patient-card"
+    );
 
     let urgencyClass = "";
 
-    if (patient.urgency === "Urgent") {
-      urgencyClass = "urgent";
+    if (
+      patient.urgency ===
+      "Urgent"
+    ) {
+
+      urgencyClass =
+        "urgent";
+
     }
 
     else if (
-      patient.urgency === "Moderate"
+      patient.urgency ===
+      "Moderate"
     ) {
-      urgencyClass = "moderate";
+
+      urgencyClass =
+        "moderate";
+
     }
 
     else {
-      urgencyClass = "non-urgent";
+
+      urgencyClass =
+        "non-urgent";
+
     }
+
+    // estimated wait
+
+    const waitTime =
+      index * 5;
 
     div.innerHTML = `
 
@@ -98,6 +114,16 @@ async function loadAdminQueue() {
 
           <p class="patient-notes">
             ${patient.notes || ""}
+          </p>
+
+          <p class="estimated-time">
+            Estimated Wait:
+            ${waitTime} mins
+          </p>
+
+          <p class="queue-position">
+            Queue Position:
+            ${index + 1}
           </p>
 
         </div>
@@ -132,7 +158,9 @@ async function loadAdminQueue() {
       </div>
     `;
 
-    adminQueue.appendChild(div);
+    adminQueue.appendChild(
+      div
+    );
 
   });
 
@@ -148,7 +176,8 @@ function updateStats(data) {
   const urgentCases =
     data.filter(
       patient =>
-        patient.urgency === "Urgent"
+        patient.urgency ===
+        "Urgent"
     ).length;
 
   const consultationCount =
@@ -172,38 +201,70 @@ function updateStats(data) {
     "consultationCount"
   ).innerText =
     consultationCount;
+
 }
 
 async function startConsult(id) {
+
+  // reset old consultations
+
   await supabaseClient
     .from("queue")
-    .update({ status: "in consultation" })
+    .update({
+      status: "waiting"
+    })
+    .eq(
+      "status",
+      "in consultation"
+    );
+
+  // start new consultation
+
+  await supabaseClient
+    .from("queue")
+    .update({
+      status:
+        "in consultation"
+    })
     .eq("id", id);
+
   loadAdminQueue();
+
 }
 
 async function markDone(id) {
+
   await supabaseClient
     .from("queue")
-    .update({ status: "done" })
+    .update({
+      status: "done"
+    })
     .eq("id", id);
+
   loadAdminQueue();
+
 }
 
 async function removePatient(id) {
+
   await supabaseClient
     .from("queue")
     .delete()
     .eq("id", id);
+
   loadAdminQueue();
+
 }
 
 async function clearQueue() {
+
   await supabaseClient
     .from("queue")
     .delete()
     .neq("id", 0);
+
   loadAdminQueue();
+
 }
 
 loadAdminQueue();
